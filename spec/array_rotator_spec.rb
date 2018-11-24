@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.expand_path('../../lib', __dir__))
 
 require 'spec_helper'
-require './lib/array_rotator'
+require 'array_rotator'
 
 RSpec.describe ArrayRotator, '#rotate' do
   let(:array) { Array.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
@@ -12,7 +12,7 @@ RSpec.describe ArrayRotator, '#rotate' do
       expect(rotator.rotate(4)).to eq([6, 7, 8, 9, 1, 2, 3, 4, 5])
     end
 
-    it 'should rotate the given array to k (k > array.length) positions to the right' do
+    it 'should rotate the given array to k (k >= array.length) positions to the right' do
       expect(rotator.rotate(10)).to eq([9, 1, 2, 3, 4, 5, 6, 7, 8])
     end
   end
@@ -27,7 +27,14 @@ RSpec.describe ArrayRotator, '#rotate' do
     end
   end
 
-  context 'when reusing the same ArrayRotator with another array' do
+  context 'when used on ArrayRotator instance with an empty array' do
+    it 'should return the same empty array' do
+      rotator.array = []
+      expect(rotator.rotate(5)).to eq([])
+    end
+  end
+
+  context 'when used on the same ArrayRotator with another array (reused instance of ArrayRotator)' do
     it 'should return the correct result' do
       rotator.rotate(4)
       another_array = [6, 3, 4, 5]
